@@ -4,15 +4,15 @@ from sqlalchemy import JSON, Column, Float, ForeignKey, Integer, String
 from app.database import Base
 
 
-class User(Base):
-    __tablename__ = "users"
+# class User(Base):
+#     __tablename__ = "users"
 
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, nullable=False)
-    email = Column(String, unique=True, index=True, nullable=False)
+#     id = Column(Integer, primary_key=True, index=True)
+#     name = Column(String, nullable=False)
+#     email = Column(String, unique=True, index=True, nullable=False)
 
 
-class DetectionHistory(Base):
+class ObjectDetectionHistory(Base):
     __tablename__ = "detection_history"
     id = Column(Integer, primary_key=True, index=True)
     filename = Column(String, nullable=False)
@@ -21,16 +21,34 @@ class DetectionHistory(Base):
     bbox = Column(JSON, nullable=False)
 
 
-# # Post table
-# class Post(Base):
-#     __tablename__ = "posts"
+class LandDetectionHistory(Base):
+    __tablename__ = "land_detection_history"
 
-#     id = Column(Integer, primary_key=True, index=True)
-#     title = Column(String, index=True, nullable=False)
-#     content = Column(String, nullable=False)
-#     owner_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
+    id = Column(Integer, primary_key=True, index=True)
+    filename = Column(String, unique=True, index=True)
+    predicted_class = Column(String, index=True)
+    confidence = Column(Float)
 
-#     # Back reference to User
-#     owner = relationship("User", back_populates="posts")
-# ```
+class LandType(Base):
+    __tablename__ = "land_types"
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, unique=True, index=True)  
+    
+class UseCase(Base):
+    __tablename__ = "use_cases"
+    id = Column(Integer, primary_key=True, index=True)
+    land_type_id = Column(Integer)  
+    description = Column(String) 
+
+
+class RoadAnalysisHistory(Base):
+    __tablename__ = "road_analysis_history"
+
+    id = Column(Integer, primary_key=True, index=True)
+    filename = Column(String, nullable=False)
+    road_type = Column(String, nullable=False)
+    road_condition = Column(String, nullable=False)
+    road_lanes = Column(Integer)
+    damaged_areas = Column(JSON)
+    processed_image_path = Column(String, nullable=False)
 

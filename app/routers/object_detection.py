@@ -1,20 +1,17 @@
 from fastapi import APIRouter, Depends, UploadFile, File
 from fastapi.responses import FileResponse, JSONResponse
 from sqlalchemy.orm import Session
-from fastapi.responses import Response
 import uuid, os
-
 from ..database import SessionLocal, get_db
-from ..models import DetectionHistory
+from ..models import ObjectDetectionHistory
 from ..schemas import DetectionResponse, DetectionHistoryOut
 from ..services.yolo_service import run_yolo, UPLOAD_DIR, RESULTS_DIR
 
-router = APIRouter(prefix="/detect", tags=["Detection"])
+router = APIRouter(prefix="/detect", tags=["Object Detection"])
 
 @router.post("/", response_model=DetectionResponse)
-async def detect_objects(file: UploadFile = File(...)):
-    db: Session = SessionLocal()
-
+async def detect_objects(file: UploadFile = File(...),db: Session = Depends(get_db)):
+    
     file_ext = file.filename.split(".")[-1]
     file_name = f"{uuid.uuid4()}.{file_ext}"
     file_path = os.path.join(UPLOAD_DIR, file_name)
@@ -22,10 +19,10 @@ async def detect_objects(file: UploadFile = File(...)):
     with open(file_path, "wb") as f:
         f.write(await file.read())
 
-   
     result_img_path = os.path.join(RESULTS_DIR, file_name)
     result = run_yolo(file_path, result_img_path)
 
+    file_path = ""
   
     detections = []
     for box in result.boxes:
@@ -37,25 +34,23 @@ async def detect_objects(file: UploadFile = File(...)):
         detections.append(detection)
 
        
-        db_entry = DetectionHistory(
+        db_entry = ObjectDetectionHistory(
             filename=file_name,
             class_name=detection["class_name"],
             confidence=detection["confidence"],
             bbox=detection["bbox"]
         )
         db.add(db_entry)
+        file_path = os.path.join(RESULTS_DIR, file_name)
 
     db.commit()
-    db.close()
-    return {"detections": detections, "result_image_url": f"/results/{file_name}"}
-
-
-# RESULTS_DIR = "/absolute/path/to/results" 
+    db.close()  
+    return {"detections": detections, "result_image_url": file_path}
 
 
 @router.get("/results/{id}")
 def get_result_image(id: int, db: Session = Depends(get_db)):
-    record = db.query(DetectionHistory).filter_by(id=id).first()
+    record = db.query(ObjectDetectionHistory).filter_by(id=id).first()
 
     print(record)
     if not record:
@@ -72,6 +67,6 @@ def get_result_image(id: int, db: Session = Depends(get_db)):
 @router.get("/history/", response_model=list[DetectionHistoryOut])
 def get_history():
     db: Session = SessionLocal()
-    records = db.query(DetectionHistory).all()
+    records = db.query(ObjectDetectionHistory).all()
     db.close()
     return records

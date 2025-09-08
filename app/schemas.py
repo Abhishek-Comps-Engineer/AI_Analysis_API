@@ -1,5 +1,15 @@
 from pydantic import BaseModel
-from typing import List, Any
+from typing import List, Any, Optional
+
+
+class LandAnalysisResponse(BaseModel):
+    vegetation_cover: float
+    water_cover: float
+    soil_brightness: float
+    ndvi_mean: float
+    land_type: str
+    land_use_case: str
+    annotated_image: str   
 
 class Detection(BaseModel):
     class_name: str
@@ -19,3 +29,33 @@ class DetectionHistoryOut(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class BoundingBox(BaseModel):
+    x_min: int
+    y_min: int
+    x_max: int
+    y_max: int
+    label: str
+    confidence: float
+
+class RoadAnalysisResponse(BaseModel):
+    road_type: str
+    road_condition: str
+    road_lanes: Optional[int]
+    damaged_areas: List[BoundingBox]
+    processed_image_path: str
+
+
+class RoadAnalysisHistoryOut(BaseModel):
+    id: int
+    filename: str
+    road_type: str
+    road_condition: str
+    road_lanes: Optional[int]
+    damaged_areas: List[BoundingBox]
+    processed_image_path: str
+
+    class Config:
+        orm_mode = True
+

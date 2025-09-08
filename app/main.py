@@ -1,6 +1,8 @@
+import os
 from fastapi import FastAPI
-from app.routers import detection
-from .database import engine, test_connection
+from app.routers import  land_detection, object_detection, road_detection
+from app.services.yolo_service import RESULTS_DIR
+from .database import engine
 from app import models
 from fastapi.staticfiles import StaticFiles
 
@@ -12,12 +14,11 @@ app = FastAPI(
    title="AI ANALYSIS API",
 )
 
+app.include_router(object_detection.router)
+app.include_router(road_detection.router)
+# app.include_router(crop_detection.router)
+app.include_router(land_detection.router)
 
-app.include_router(detection.router)
+app.mount("/results", StaticFiles(directory=RESULTS_DIR), name="static_results")
 
-app.mount("/detect/results", StaticFiles(directory="results"), name="results")
 
-@app.get("/")
-def get():
-   test_connection()
-   return {"data":"My Message"}

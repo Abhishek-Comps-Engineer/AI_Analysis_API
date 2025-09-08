@@ -15,9 +15,9 @@ def test_connection():
     try:
         with engine.connect() as conn:
             result = conn.execute(text("SELECT 1"))
-            print(f"✅ Database connected: {settings.database_name}", result.scalar())
+            print(f"Database connected: {settings.database_name}", result.scalar())
     except Exception as e:
-        print("❌ Database connection failed:", e)
+        print("Database connection failed:", e)
 
 
 Base = declarative_base()
