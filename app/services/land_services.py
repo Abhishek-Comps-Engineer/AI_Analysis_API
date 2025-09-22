@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from app.models import LandType, UseCase
 
 
-MODEL_NAME = "prithivMLmods/GiD-Land-Cover-Classification"
+MODEL_NAME = r"prithivMLmods/GiD-Land-Cover-Classification"
 processor = AutoImageProcessor.from_pretrained(MODEL_NAME)
 model = AutoModelForImageClassification.from_pretrained(MODEL_NAME)
 

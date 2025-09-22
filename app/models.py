@@ -1,6 +1,6 @@
 
 
-from sqlalchemy import JSON, Column, Float, ForeignKey, Integer, String
+from sqlalchemy import JSON, TIMESTAMP, Column, Float, ForeignKey, Integer, String, text
 from app.database import Base
 
 
@@ -11,6 +11,14 @@ from app.database import Base
 #     name = Column(String, nullable=False)
 #     email = Column(String, unique=True, index=True, nullable=False)
 
+
+class FloodHistory(Base):
+    __tablename__ = "flood_history"
+    id = Column(Integer, primary_key=True, index=True)
+    filename = Column(String, nullable=False)
+    created_at = Column(TIMESTAMP, server_default=text("CURRENT_TIMESTAMP"))
+    status = Column(String)
+    result_path = Column(String)
 
 class ObjectDetectionHistory(Base):
     __tablename__ = "detection_history"

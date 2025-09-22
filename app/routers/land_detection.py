@@ -1,16 +1,15 @@
 import os
 import uuid
 from PIL import Image, ImageDraw, ImageFont
-from fastapi import APIRouter, FastAPI, File, UploadFile, Depends
+from fastapi import APIRouter, File, UploadFile, Depends
 from fastapi.responses import FileResponse, JSONResponse
 from sqlalchemy.orm import Session
 from app.models import LandDetectionHistory
 from app.services.land_services import get_use_cases, predict_land_cover
-from app.database import get_db, Base, engine
+from app.database import get_db
 from app.routers.land_detection import predict_land_cover
-import shutil
 
-from app.services.yolo_service import RESULTS_DIR, UPLOAD_DIR
+from app.services.object_service import RESULTS_DIR, UPLOAD_DIR
 
 
 router = APIRouter(prefix="/land", tags=["Land Analysis"])

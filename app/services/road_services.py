@@ -11,9 +11,9 @@ weights_path = os.path.join("app", "models", "road_multitask_model.pth")
 if os.path.exists(weights_path):
     model.load_state_dict(torch.load(weights_path, map_location=device))
     model.eval()
-    print("✅ Loaded trained weights")
+    print("Loaded trained weights")
 else:
-    print("⚠️ No trained weights found.")
+    print("No trained weights found.")
 
 transform = transforms.Compose([
     transforms.Resize((224,224)),

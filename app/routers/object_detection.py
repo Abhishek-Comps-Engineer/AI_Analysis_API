@@ -5,7 +5,7 @@ import uuid, os
 from ..database import SessionLocal, get_db
 from ..models import ObjectDetectionHistory
 from ..schemas import DetectionResponse, DetectionHistoryOut
-from ..services.yolo_service import run_yolo, UPLOAD_DIR, RESULTS_DIR
+from ..services.object_service import run_yolo, UPLOAD_DIR, RESULTS_DIR
 
 router = APIRouter(prefix="/detect", tags=["Object Detection"])
 

@@ -6,7 +6,7 @@ from fastapi.responses import FileResponse
 
 from app.schemas import RoadAnalysisHistoryOut
 from app.services.road_services import predict_image
-from app.services.yolo_service import RESULTS_DIR
+from app.services.object_service import RESULTS_DIR
 from app.utils import draw_bboxes
 from ..models import RoadAnalysisHistory
 from sqlalchemy.orm import Session
