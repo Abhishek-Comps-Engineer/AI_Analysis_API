@@ -1,6 +1,17 @@
+from datetime import datetime
 from pydantic import BaseModel
 from typing import List, Any, Optional
 
+
+class FloodEventSchema(BaseModel):
+    id: int
+    filename: str
+    detected_at: datetime
+    flood_percentage: float
+    image_url: str
+
+    class Config:
+        from_attributes = True 
 
 class LandAnalysisResponse(BaseModel):
     vegetation_cover: float
@@ -28,7 +39,7 @@ class DetectionHistoryOut(BaseModel):
     bbox: Any
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class BoundingBox(BaseModel):
@@ -57,5 +68,5 @@ class RoadAnalysisHistoryOut(BaseModel):
     processed_image_path: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 

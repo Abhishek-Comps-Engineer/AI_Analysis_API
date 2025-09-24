@@ -1,24 +1,17 @@
 
 
-from sqlalchemy import JSON, TIMESTAMP, Column, Float, ForeignKey, Integer, String, text
+from datetime import datetime
+from sqlalchemy import JSON, Column, DateTime, Float, Integer, String 
 from app.database import Base
 
+class FloodEvents(Base):
+    __tablename__ = "FloodEvents"
 
-# class User(Base):
-#     __tablename__ = "users"
-
-#     id = Column(Integer, primary_key=True, index=True)
-#     name = Column(String, nullable=False)
-#     email = Column(String, unique=True, index=True, nullable=False)
-
-
-class FloodHistory(Base):
-    __tablename__ = "flood_history"
     id = Column(Integer, primary_key=True, index=True)
-    filename = Column(String, nullable=False)
-    created_at = Column(TIMESTAMP, server_default=text("CURRENT_TIMESTAMP"))
-    status = Column(String)
-    result_path = Column(String)
+    filename = Column(String)
+    detected_at = Column(DateTime, default=datetime.utcnow)
+    flood_percentage = Column(Float)
+    image_url = Column(String)
 
 class ObjectDetectionHistory(Base):
     __tablename__ = "detection_history"
