@@ -4,6 +4,16 @@ from datetime import datetime
 from sqlalchemy import JSON, Column, DateTime, Float, Integer, String 
 from app.database import Base
 
+
+class UserProfile(Base):
+    __tablename__ = "user_profile"
+
+    id = Column(Integer,primary_key=True,index=True)
+    profileImage_url =  Column(String)
+    email = Column(String,unique=True)
+
+
+
 class FloodEvents(Base):
     __tablename__ = "FloodEvents"
 

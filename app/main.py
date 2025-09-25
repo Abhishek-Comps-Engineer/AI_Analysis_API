@@ -1,6 +1,6 @@
 import os
 from fastapi import FastAPI
-from app.routers import  flood_detection, land_detection, object_detection, road_detection
+from app.routers import  flood_detection, land_detection, object_detection, road_detection, user_profile
 from app.services.object_service import RESULTS_DIR
 from .database import engine
 from fastapi.middleware.cors import CORSMiddleware   
@@ -33,12 +33,17 @@ app.add_middleware(
 )
 
 
+app.include_router(user_profile.router)
+app.include_router(flood_detection.router)
 app.include_router(object_detection.router)
 app.include_router(road_detection.router)
-app.include_router(flood_detection.router)
 app.include_router(land_detection.router)
 
+
 app.mount("/results", StaticFiles(directory=RESULTS_DIR), name="static_results")
+app.mount("/profiles", StaticFiles(directory=user_profile.PROFILES_DIR), name="static_results")
 
 
-
+@app.get("/")
+def getStart():
+    return {"message": "Welcome!, Visit http://127.0.0.1:8000/docs to access the full API features."}

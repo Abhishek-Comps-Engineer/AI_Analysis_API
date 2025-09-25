@@ -13,6 +13,7 @@ model = smp.Unet(
     activation='sigmoid'
 )
 model.load_state_dict(torch.load(r"models\flood_detection_model.pth"))
+
 model.eval()
 
 def detect_flood(image_data: bytes):

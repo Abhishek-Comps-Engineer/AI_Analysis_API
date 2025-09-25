@@ -1,7 +1,7 @@
 from ultralytics import YOLO
 import os
 
-model = YOLO(r"models\yolov8l.pt")
+model = YOLO(r"models\yolov8n.pt")
 
 UPLOAD_DIR = "uploads"
 RESULTS_DIR = "results"
