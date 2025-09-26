@@ -32,7 +32,9 @@ async def addUser(
       unique_filename = f"{uuid.uuid4().hex}{ext}"
       image_path = os.path.join(PROFILES_DIR,unique_filename)
 
-      background_tasks.add_task(save_image,image,image_path)
+      contents = await image.read()
+
+      background_tasks.add_task(save_image,contents,image_path)
 
 
    db_user = UserProfile(email=email, profileImage_url=image_path)
@@ -53,6 +55,6 @@ def get_image_path(email: str, db: Session = Depends(get_db)):
     return user
 
 
-def save_image(file: UploadFile, path: str):
+def save_image(contents: bytes, path: str):
     with open(path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+        buffer.write(contents)

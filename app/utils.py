@@ -3,6 +3,7 @@ import cv2
 
 
 
+
 def draw_bboxes(image_path: str, predictions: list, output_path: str):
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     img = cv2.imread(image_path)
