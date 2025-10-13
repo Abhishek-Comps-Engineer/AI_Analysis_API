@@ -8,8 +8,7 @@ from app.models import LandDetectionHistory
 from app.services.land_services import get_use_cases, predict_land_cover
 from app.database import get_db
 from app.routers.land_detection import predict_land_cover
-
-from app.services.object_service import RESULTS_DIR, UPLOAD_DIR
+from app.utils import UPLOADS_DIR, RESULTS_DIR
 
 
 router = APIRouter(prefix="/land", tags=["Land Analysis"])
@@ -19,7 +18,7 @@ router = APIRouter(prefix="/land", tags=["Land Analysis"])
 async def detect_land(file: UploadFile = File(...), db: Session = Depends(get_db)):
     file_ext = file.filename.split(".")[-1]
     file_name = f"{uuid.uuid4()}.{file_ext}"
-    upload_path = os.path.join(UPLOAD_DIR, file_name)
+    upload_path = os.path.join(UPLOADS_DIR, file_name)
 
     with open(upload_path, "wb") as f:
         f.write(await file.read())

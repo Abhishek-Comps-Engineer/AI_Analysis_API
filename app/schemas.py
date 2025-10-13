@@ -2,6 +2,19 @@ from datetime import datetime
 from pydantic import BaseModel, EmailStr
 from typing import List, Any, Optional
 
+class ActivitySchema(BaseModel):
+    id: int
+    filename: str
+    activity_detail: str
+    created_at: datetime
+    activity_type: str
+
+    class Config:
+        from_attributes = True
+
+class ActivityListResponse(BaseModel):
+    activities: List[ActivitySchema]
+
 
 class UserProfileOutSchema(BaseModel):
     profileImage_url: str
@@ -22,15 +35,7 @@ class FloodEventSchema(BaseModel):
 
     class Config:
         from_attributes = True 
-
-class LandAnalysisResponse(BaseModel):
-    vegetation_cover: float
-    water_cover: float
-    soil_brightness: float
-    ndvi_mean: float
-    land_type: str
-    land_use_case: str
-    annotated_image: str   
+ 
 
 class Detection(BaseModel):
     class_name: str
@@ -64,7 +69,6 @@ class RoadAnalysisResponse(BaseModel):
     road_type: str
     road_condition: str
     road_lanes: Optional[int]
-    damaged_areas: List[BoundingBox]
     processed_image_path: str
 
 
@@ -74,7 +78,6 @@ class RoadAnalysisHistoryOut(BaseModel):
     road_type: str
     road_condition: str
     road_lanes: Optional[int]
-    damaged_areas: List[BoundingBox]
     processed_image_path: str
 
     class Config:

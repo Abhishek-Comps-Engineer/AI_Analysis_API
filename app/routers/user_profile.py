@@ -1,5 +1,4 @@
 import os
-import shutil
 import uuid
 from fastapi import APIRouter, BackgroundTasks, File, Form, HTTPException, UploadFile, Depends,status
 from pydantic import EmailStr
@@ -47,7 +46,7 @@ async def addUser(
 
 @router.get("/", response_model=UserProfileOutSchema)
 def get_image_path(email: str, db: Session = Depends(get_db)):
-    
+    print(email)
     user = db.query(UserProfile).filter(UserProfile.email == email).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")

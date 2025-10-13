@@ -1,5 +1,3 @@
-
-
 from datetime import datetime
 from sqlalchemy import JSON, Column, DateTime, Float, Integer, String 
 from app.database import Base
@@ -22,6 +20,7 @@ class FloodEvents(Base):
     detected_at = Column(DateTime, default=datetime.utcnow)
     flood_percentage = Column(Float)
     image_url = Column(String)
+    created_at = Column(DateTime, default=datetime.utcnow)
 
 class ObjectDetectionHistory(Base):
     __tablename__ = "detection_history"
@@ -30,6 +29,7 @@ class ObjectDetectionHistory(Base):
     class_name = Column(String, nullable=False)
     confidence = Column(Float, nullable=False)
     bbox = Column(JSON, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
 
 
 class LandDetectionHistory(Base):
@@ -39,11 +39,13 @@ class LandDetectionHistory(Base):
     filename = Column(String, unique=True, index=True)
     predicted_class = Column(String, index=True)
     confidence = Column(Float)
+    created_at = Column(DateTime, default=datetime.utcnow)
 
 class LandType(Base):
     __tablename__ = "land_types"
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True, index=True)  
+    created_at = Column(DateTime, default=datetime.utcnow)
     
 class UseCase(Base):
     __tablename__ = "use_cases"
@@ -62,4 +64,5 @@ class RoadAnalysisHistory(Base):
     road_lanes = Column(Integer)
     damaged_areas = Column(JSON)
     processed_image_path = Column(String, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
 

@@ -2,10 +2,12 @@ from fastapi import APIRouter, Depends, UploadFile, File
 from fastapi.responses import FileResponse, JSONResponse
 from sqlalchemy.orm import Session
 import uuid, os
+
+from app.utils import RESULTS_DIR, UPLOADS_DIR
 from ..database import SessionLocal, get_db
 from ..models import ObjectDetectionHistory
 from ..schemas import DetectionResponse, DetectionHistoryOut
-from ..services.object_service import run_yolo, UPLOAD_DIR, RESULTS_DIR
+from ..services.object_service import run_yolo
 
 router = APIRouter(prefix="/detect", tags=["Object Detection"])
 
@@ -14,7 +16,7 @@ async def detect_objects(file: UploadFile = File(...),db: Session = Depends(get_
     
     file_ext = file.filename.split(".")[-1]
     file_name = f"{uuid.uuid4()}.{file_ext}"
-    file_path = os.path.join(UPLOAD_DIR, file_name)
+    file_path = os.path.join(UPLOADS_DIR, file_name)
 
     with open(file_path, "wb") as f:
         f.write(await file.read())

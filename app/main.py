@@ -1,7 +1,7 @@
 import os
 from fastapi import FastAPI
-from app.routers import  flood_detection, land_detection, object_detection, road_detection, user_profile
-from app.services.object_service import RESULTS_DIR
+from app.routers import  detection_history, flood_detection, land_detection, object_detection, road_detection, user_profile
+from app.utils import RESULTS_DIR
 from .database import engine
 from fastapi.middleware.cors import CORSMiddleware   
 from app import models
@@ -34,10 +34,12 @@ app.add_middleware(
 
 
 app.include_router(user_profile.router)
+app.include_router(user_profile.router)
 app.include_router(flood_detection.router)
 app.include_router(object_detection.router)
 app.include_router(road_detection.router)
 app.include_router(land_detection.router)
+app.include_router(detection_history.router)
 
 
 app.mount("/results", StaticFiles(directory=RESULTS_DIR), name="static_results")

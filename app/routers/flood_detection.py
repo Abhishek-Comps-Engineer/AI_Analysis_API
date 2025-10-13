@@ -8,7 +8,7 @@ from app.database import get_db
 from app.models import FloodEvents
 from app.schemas import FloodEventSchema
 from app.services.flood_services import detect_flood
-from app.services.object_service import RESULTS_DIR
+from app.utils import RESULTS_DIR
 router = APIRouter(prefix="/flood", tags=["Flood Detection"])
 
 @router.post("/", response_model=FloodEventSchema)
@@ -27,7 +27,7 @@ async def detect_flood_endpoint(file: UploadFile = File(...), db: Session = Depe
             filename=unique_filename,
             flood_percentage=float(flood_percentage),
             detected_at=datetime.utcnow(),
-            image_url=f"/{RESULTS_DIR}/{unique_filename}"
+            image_url=f"{RESULTS_DIR}/{unique_filename}"
         )
         db.add(db_flood_event)
         db.commit()
