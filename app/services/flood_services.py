@@ -6,7 +6,6 @@ import io
 from PIL import Image
 import segmentation_models_pytorch as smp
 
-# Define model
 model = smp.Unet(
     encoder_name="mobilenet_v2",
     encoder_weights=None,
@@ -14,12 +13,10 @@ model = smp.Unet(
     classes=1,
     activation='sigmoid'
 )
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, "..", "models", "flood_detection_model.pth")
+MODEL_PATH = os.path.normpath(MODEL_PATH)
 
-# Cross-platform path to the model file
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # directory of this script
-MODEL_PATH = os.path.join(BASE_DIR, "models", "flood_detection_model.pth")
-
-# Load model
 state_dict = torch.load(MODEL_PATH, map_location=torch.device('cpu'))
 model.load_state_dict(state_dict)
 model.to('cpu')
