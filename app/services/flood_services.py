@@ -14,8 +14,12 @@ model = smp.Unet(
     activation='sigmoid'
 )
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MODEL_PATH = os.path.join(BASE_DIR, "..", "models", "flood_detection_model.pth")
-MODEL_PATH = os.path.normpath(MODEL_PATH)
+
+MODEL_PATH = os.path.join(BASE_DIR, "..", "..", "models", "flood_detection_model.pth")
+
+MODEL_PATH = os.path.abspath(MODEL_PATH)
+
+print("Model Path:", MODEL_PATH)
 
 state_dict = torch.load(MODEL_PATH, map_location=torch.device('cpu'))
 model.load_state_dict(state_dict)
