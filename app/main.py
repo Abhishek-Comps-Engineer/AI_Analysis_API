@@ -1,4 +1,5 @@
 import os
+import uvicorn
 from fastapi import FastAPI
 from app.routers import  detection_history, flood_detection, land_detection, object_detection, road_detection, user_profile
 from app.utils import RESULTS_DIR
@@ -34,7 +35,6 @@ app.add_middleware(
 
 
 app.include_router(user_profile.router)
-app.include_router(user_profile.router)
 app.include_router(flood_detection.router)
 app.include_router(object_detection.router)
 app.include_router(road_detection.router)
@@ -49,3 +49,8 @@ app.mount("/profiles", StaticFiles(directory=user_profile.PROFILES_DIR), name="s
 @app.get("/")
 def getStart():
     return {"message": "Welcome!, Visit http://127.0.0.1:8000/docs to access the full API features."}
+
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8000))  
+    uvicorn.run("app.main:app", host="0.0.0.0", port=port)
