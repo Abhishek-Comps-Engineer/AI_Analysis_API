@@ -47,6 +47,7 @@ def get_start():
     return {"message": "Welcome! Visit /docs to access the API documentation."}
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))  
+    os.environ["PORT"] = os.environ.get("PORT", "10000")
+    port = int(os.environ["PORT"])
     print(f"🚀 Starting server on port {port}...")
     uvicorn.run("app.main:app", host="0.0.0.0", port=port)
