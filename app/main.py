@@ -49,5 +49,5 @@ def get_start():
 if __name__ == "__main__":
     os.environ["PORT"] = os.environ.get("PORT", "10000")
     port = int(os.environ["PORT"])
-    print(f"🚀 Starting server on port {port}...")
+    print(f"Starting server on port {port}...")
     uvicorn.run("app.main:app", host="0.0.0.0", port=port)
